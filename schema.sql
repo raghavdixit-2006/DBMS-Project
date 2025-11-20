@@ -1,0 +1,66 @@
+CREATE TABLE users (
+  id VARCHAR(50) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE (email)
+);
+
+CREATE TABLE products (
+  id VARCHAR(50) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  price DECIMAL(10, 2) NOT NULL,
+  gender VARCHAR(50),
+  occasion VARCHAR(100),
+  img_url VARCHAR(1024),
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE product_sizes (
+  id INT NOT NULL AUTO_INCREMENT,
+  product_id VARCHAR(50) NOT NULL,
+  size VARCHAR(50) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+CREATE TABLE orders (
+  id VARCHAR(50) NOT NULL,
+  user_id VARCHAR(50) NOT NULL,
+  order_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  total_amount DECIMAL(10, 2) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE order_items (
+  id INT NOT NULL AUTO_INCREMENT,
+  order_id VARCHAR(50) NOT NULL,
+  product_id VARCHAR(50) NOT NULL,
+  size VARCHAR(50) NOT NULL,
+  quantity INT NOT NULL,
+  price DECIMAL(10, 2) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+CREATE TABLE exchanges (
+  id VARCHAR(50) NOT NULL,
+  order_id VARCHAR(50) NOT NULL,
+  reason TEXT,
+  status VARCHAR(50) NOT NULL DEFAULT 'Pending',
+  requested_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
+);
+
+CREATE TABLE newsletter_subscribers (
+  id INT NOT NULL AUTO_INCREMENT,
+  email VARCHAR(255) NOT NULL,
+  subscribed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE (email)
+);

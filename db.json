@@ -1,0 +1,464 @@
+{
+  "users": [
+    {
+      "id": "3",
+      "name": "remchan",
+      "email": "samar672006@gmail.com",
+      "password": "123456abc"
+    },
+    {
+      "id": "5",
+      "name": "Samar",
+      "email": "samar0704.becse24@chitkara.edu.in",
+      "password": "12345678asd"
+    },
+    {
+      "id": "53b8",
+      "name": "priyanshu",
+      "email": "priyanshurana@gmail.com",
+      "password": "ulisfer123A3"
+    },
+    {
+      "id": "ba0b",
+      "name": "Samar",
+      "email": "sama@gmail.com",
+      "password": "123456asd"
+    },
+    {
+      "id": "e23d",
+      "name": "raghav",
+      "email": "raghav@gmail.com",
+      "password": "12345raghav"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "Nike Air Max",
+      "price": 5999,
+      "gender": "men",
+      "occasion": "casual",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/47abb75c-4df6-4379-adae-9ff2dcfc9e9f/NIKE+SHOX+RIDE+2.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9",
+        "UK 10",
+        "UK 11"
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Adidas Ultraboost",
+      "price": 7299,
+      "gender": "men",
+      "occasion": "sports",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/47614650-53ed-4316-96a2-5ef16d8badb0/NIKE+REACT+SFB+CARBON.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9",
+        "UK 10",
+        "UK 11"
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Puma Drift Cat",
+      "price": 4899,
+      "gender": "men",
+      "occasion": "formal",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/95bb7ae6-3d4e-4cdb-aac5-eb4baae418e7/NIKE+ZOOM+VOMERO+5+PRM.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9",
+        "UK 10",
+        "UK 11"
+      ]
+    },
+    {
+      "id": "4",
+      "name": "Skechers Go Walk",
+      "price": 3899,
+      "gender": "women",
+      "occasion": "casual",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/8507bfd1-93ca-43dd-9e34-dd6c30afc7f1/NIKE+SHOX+R4.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9",
+        "UK 10",
+        "UK 11"
+      ]
+    },
+    {
+      "id": "5",
+      "name": "Bata Formal Leather",
+      "price": 2799,
+      "gender": "men",
+      "occasion": "formal",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/bedb0bf3-8009-4e34-96a9-9fe186d5ccff/NIKE+CORTEZ+LTR+SE.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9",
+        "UK 10",
+        "UK 11"
+      ]
+    },
+    {
+      "id": "6",
+      "name": "Woodland Trekking Boot",
+      "price": 5199,
+      "gender": "men",
+      "occasion": "sports",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/692cdb67-6709-4e93-953d-e6157edc3b13/AIR+FORCE+1+%2707.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9",
+        "UK 10",
+        "UK 11"
+      ]
+    },
+    {
+      "id": "7",
+      "name": "Campus Casual Runner",
+      "price": 2499,
+      "gender": "kids",
+      "occasion": "sports",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/c90f7949-b685-485e-8602-23f1d079cd3a/AIR+FORCE+1+%2707+WB.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5"
+      ]
+    },
+    {
+      "id": "8",
+      "name": "Sparx Slip-On",
+      "price": 2199,
+      "gender": "men",
+      "occasion": "casual",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/529e9f88-f91c-4d58-87cf-82e21393ea33/NIKE+DUNK+LOW+RETRO+PRM.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9",
+        "UK 10",
+        "UK 11"
+      ]
+    },
+    {
+      "id": "9",
+      "name": "Crocs Comfort Slides",
+      "price": 1799,
+      "gender": "women",
+      "occasion": "casual",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/d9eaab9f-5089-47b5-9095-df566497c83e/NIKE+DUNK+LOW+RETRO+LTD+HWN.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9"
+      ]
+    },
+    {
+      "id": "10",
+      "name": "Reebok Zig Dynamica",
+      "price": 4999,
+      "gender": "men",
+      "occasion": "sports",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/4ffaaac5-a2e5-4d34-8955-84094bcc9185/NIKE+SHOX+RIDE+2+PRM.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9",
+        "UK 10",
+        "UK 11"
+      ]
+    },
+    {
+      "id": "11",
+      "name": "Fila Classic Retro",
+      "price": 3499,
+      "gender": "women",
+      "occasion": "casual",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/339cc390-4fcc-4b89-86be-0d296649fe4a/TOTAL+90.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9"
+      ]
+    },
+    {
+      "id": "12",
+      "name": "Red Chief Leather",
+      "price": 5599,
+      "gender": "men",
+      "occasion": "formal",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/b28ec80a-e46e-4e2e-9a5e-3137cbb48160/NIKE+CORTEZ+SE.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9",
+        "UK 10",
+        "UK 11"
+      ]
+    },
+    {
+      "id": "13",
+      "name": "Nike Revolution 6",
+      "price": 4999,
+      "gender": "women",
+      "occasion": "sports",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/7d944533-8894-4d75-bda2-2f7f8565ebaa/KILLSHOT+2+PRM.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9"
+      ]
+    },
+    {
+      "id": "14",
+      "name": "Adidas Stan Smith",
+      "price": 5299,
+      "gender": "men",
+      "occasion": "sneaker",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/27088074-6530-425a-96e1-d75671cd5b1c/NIKE+AIR+MAX+1+%2786+OG+G.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9",
+        "UK 10",
+        "UK 11"
+      ]
+    },
+    {
+      "id": "15",
+      "name": "Puma Cali Star",
+      "price": 4599,
+      "gender": "women",
+      "occasion": "sneaker",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/29a39b77-7adc-4750-a6c7-f1e8cd3ea30f/NIKE+AIR+MAX+PLUS+VII.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9"
+      ]
+    },
+    {
+      "id": "16",
+      "name": "New Balance 574",
+      "price": 5799,
+      "gender": "men",
+      "occasion": "sneaker",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/e90ccffa-5cde-4a15-8eb1-490519e16aa1/WMNS+AIR+JORDAN+1+RETRO+HI+OG.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9",
+        "UK 10",
+        "UK 11"
+      ]
+    },
+    {
+      "id": "17",
+      "name": "Asics Gel Contend",
+      "price": 4499,
+      "gender": "women",
+      "occasion": "sports",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/332638c0-4ba9-4c88-9569-a930f1f4fc99/NIKE+FIELD+GENERAL.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8"
+      ]
+    },
+    {
+      "id": "18",
+      "name": "Kids Fun Light Sneakers",
+      "price": 1999,
+      "gender": "kids",
+      "occasion": "casual",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/e34f45c2-765d-4cdb-b3bf-7599b664ec0b/NIKE+C1TY+PRM.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5"
+      ]
+    },
+    {
+      "id": "19",
+      "name": "Skechers Memory Foam",
+      "price": 4899,
+      "gender": "women",
+      "occasion": "casual",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/disuwww5uxkqulu2aivh/AIR+MAX+PLUS+III.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9"
+      ]
+    },
+    {
+      "id": "20",
+      "name": "Nike ZoomX Invincible",
+      "price": 8499,
+      "gender": "men",
+      "occasion": "sports",
+      "img": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/xa3j5pmlqu9lz6y1xbsb/NIKE+SHOX+TL.png",
+      "sizes": [
+        "UK 1",
+        "UK 2",
+        "UK 3",
+        "UK 4",
+        "UK 5",
+        "UK 6",
+        "UK 7",
+        "UK 8",
+        "UK 9",
+        "UK 10",
+        "UK 11"
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD-1763357190980",
+      "userId": "5",
+      "items": [
+        {
+          "id": "2",
+          "name": "Adidas Ultraboost",
+          "size": "UK 1",
+          "quantity": 1,
+          "price": 7299
+        }
+      ],
+      "date": "2025-11-17T05:26:30.980Z"
+    }
+  ],
+  "exchanges": [
+    {
+      "id": "EX1763357846149",
+      "orderId": "ORD-1763357190980",
+      "userId": "5",
+      "itemName": "addidas",
+      "reason": "wrong size",
+      "status": "Pending",
+      "createdAt": "2025-11-17T05:37:26.149Z"
+    }
+  ],
+  "newsletter": [
+    {
+      "id": "a624",
+      "email": "samar@gmail.com"
+    }
+  ]
+}
