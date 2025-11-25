@@ -101,3 +101,26 @@ This entire workflow is a direct, practical demonstration of key relational data
 - **This flow demonstrates Unit 4 (DML - Data Manipulation Language) and Unit 7 (Transactions) because...**
     - **DML (Unit 4):** The stored procedure `sp_place_order` and the trigger `trg_reduce_stock` are composed almost entirely of DML statements. The procedure uses `INSERT` to create new records in `orders` and `order_items`. The trigger uses `UPDATE` to modify the `stock_quantity` in the `products` table. This shows how DML is used to perform the core data manipulation of the application.
     - **Transactions (Unit 7):** The `sp_place_order` procedure is wrapped in a transaction (`START TRANSACTION`...`COMMIT`/`ROLLBACK`). This guarantees the **Atomicity** property of ACID—either the entire order (including all items and all stock updates) succeeds, or the entire operation is rolled back, leaving the database in its original, consistent state. This prevents partial orders or incorrect stock levels, which is the primary purpose of transaction control.
+
+---
+### MIGRATION TO "BACKEND CONN" TEMPLATE (2025-11-25)
+---
+
+The entire project (both backend and frontend) was migrated from a single root-level structure to the modular `Backend Conn/` template. This aligns the project with standard Express.js application structure while preserving all syllabus-compliant database logic.
+
+**Summary of Changes:**
+
+1.  **New Application Root**: The application now lives in and runs from the `Backend Conn/` directory.
+2.  **Modular Routing**: The monolithic API in the original `server.js` was broken down into modular route files within `Backend Conn/routes/`:
+    *   `auth.js`: Handles user registration and login.
+    *   `products.js`: Handles fetching products.
+    *   `orders.js`: Handles order creation and retrieval.
+    *   `exchanges.js`: Handles exchange requests.
+    *   `newsletter.js`: Handles newsletter subscriptions.
+3.  **Centralized DB Connection**: The database connection pool was consolidated into `Backend Conn/db.js` and configured to use environment variables from a new `.env` file within the same directory.
+4.  **Static File Serving**: All frontend files (HTML, JS, images) were moved from the project root into the `Backend Conn/public/` directory, which is now served statically by Express.
+5.  **Unified SQL Initialization**: The original `schema.sql` and `advanced_db_logic.sql` were combined into a single, fully idempotent script at `Backend Conn/sql/init.sql`. This script can now be run multiple times without causing "already exists" errors for tables, columns, procedures, or triggers.
+6.  **Dependency Management**: The `package.json` inside `Backend Conn/` was updated to include all necessary dependencies (like `dotenv`), and `npm install` was run to create a local `node_modules` folder.
+7.  **Cleanup**: The `todos.js` route and `users.json` data file from the original template were removed as they are not relevant to the Stellar Soles project.
+
+**Syllabus Compliance Check**: All advanced DBMS features (`sp_create_user`, `sp_place_order`, `view_available_products`, `trg_reduce_stock`, and transactions) were successfully migrated and are called from the new modular routes, preserving the "thin client" architecture of the backend.

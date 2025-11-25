@@ -1,8 +1,68 @@
 # Usage
 
+---
+### **New "Backend Conn" Application (Professor's Template)**
+
+The primary application has been migrated to the `Backend Conn/` directory, adopting a modular structure as per the professor's template. Please use the following instructions to run the application.
+
+#### 1. Set Up Your MySQL Database
+First, ensure you have a MySQL server installed and running.
+
+*   **Create a new database**: 
+    ```sql
+    CREATE DATABASE IF NOT EXISTS stellar_soles_db;
+    ```
+*   **Execute the Initialization Script**: Navigate to the project root directory in your terminal and execute the `init.sql` script located inside `Backend Conn/sql/`. This script is idempotent, meaning it can be run multiple times without causing errors. It will create all tables, views, stored procedures, and triggers.
+    ```bash
+    mysql -u your_mysql_user -p stellar_soles_db < "Backend Conn/sql/init.sql"
+    ```
+    (Replace `your_mysql_user` with your MySQL username and you will be prompted for your password.)
+
+#### 2. Configure Database Credentials
+The application uses a `.env` file to securely store database credentials.
+
+*   **Open `.env`**: In the `Backend Conn/` directory, open the `.env` file.
+*   **Fill in your details**: Update the placeholder values with your actual MySQL database connection details.
+
+#### 3. Install Dependencies
+Make sure you have Node.js and npm installed.
+
+*   **Install npm packages**: In your terminal, navigate into the `Backend Conn` directory and run:
+    ```bash
+    cd "Backend Conn"
+    npm install
+    ```
+
+#### 4. Migrate Your Data (Optional)
+To populate your database with the initial product and user data, you can run the migration script from the **project root directory**.
+
+*   **Run the migration script**: 
+    ```bash
+    npm run migrate
+    ```
+
+#### 5. Start the Backend Server
+Launch the new modular Node.js Express backend.
+
+*   **Start the server (from the project root)**: 
+    ```bash
+    npm start --prefix "Backend Conn"
+    ```
+    The backend server will start on `http://localhost:3001`.
+
+#### 6. Open the Frontend
+Access the web application in your browser.
+
+*   **Open `index.html`**: Open the `index.html` file located in the `Backend Conn/public/` directory in your web browser.
+
+---
+### **Old Monolithic Application (Historical)**
+
+*The following instructions apply to the original, monolithic `server.js` which is now deprecated but kept for historical reference.*
+
 To get the Stellar Soles application up and running on your local machine, follow these steps:
 
-### 1. Set Up Your MySQL Database
+#### 1. Set Up Your MySQL Database
 First, ensure you have a MySQL server installed and running.
 
 *   **Create a new database**: Open your MySQL client (e.g., MySQL Workbench, command line) and create a new database for this project. For example:
@@ -15,7 +75,7 @@ First, ensure you have a MySQL server installed and running.
     ```
     (Replace `your_mysql_user` with your MySQL username and `stellar_soles_db` with your database name. You will be prompted for your MySQL password.)
 
-### 2. Configure Database Credentials
+#### 2. Configure Database Credentials
 The application uses a `.env` file to securely store database credentials.
 
 *   **Open `.env`**: In the project root, open the `.env` file.
@@ -29,7 +89,7 @@ The application uses a `.env` file to securely store database credentials.
     ```
     (Ensure `DB_NAME` matches the database you created in step 1.)
 
-### 3. Install Dependencies
+#### 3. Install Dependencies
 Make sure you have Node.js and npm installed.
 
 *   **Install npm packages**: In the project root directory, open your terminal and run:
@@ -37,7 +97,7 @@ Make sure you have Node.js and npm installed.
     npm install
     ```
 
-### 4. Migrate Your Data
+#### 4. Migrate Your Data
 Transfer the initial product and user data from the `db.json` file into your new MySQL database.
 
 *   **Run the migration script**: In your terminal, execute:
@@ -46,7 +106,7 @@ Transfer the initial product and user data from the `db.json` file into your new
     ```
     This script will securely hash user passwords and populate your MySQL tables.
 
-### 5. Start the Backend Server
+#### 5. Start the Backend Server
 Launch the Node.js Express backend.
 
 *   **Start the server**: In your terminal, run:
@@ -55,7 +115,7 @@ Launch the Node.js Express backend.
     ```
     The backend server will start on `http://localhost:3001`.
 
-### 6. Open the Frontend
+#### 6. Open the Frontend
 Access the web application in your browser.
 
 *   **Open `index.html`**: Simply open the `index.html` file located in the project root directory in your web browser.
@@ -267,4 +327,3 @@ Moving business logic into the database layer (using Views, Stored Procedures, a
 |                         | It uses `START TRANSACTION`, `COMMIT`, and `ROLLBACK` (via an error handler) to ensure atomicity. | `sp_place_order` procedure               |
 
 *Additionally, a new `stock_quantity` column was added to the `products` table via an `ALTER TABLE` command to facilitate this new logic.*
-
