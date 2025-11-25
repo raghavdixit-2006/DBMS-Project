@@ -1,0 +1,103 @@
+# MASTERCLASS: Stellar Soles - The Database-Driven Architecture
+
+This document provides a highly detailed, technical breakdown of the entire system's operation, focusing on how business logic has been moved from the application layer into the MySQL database.
+
+---
+### Section 1: The New "Brain" of the Project
+---
+
+Previously, the Node.js `server.js` file was the "brain" of the operation. It contained the business logic for creating users, checking product stock, calculating totals, and managing the steps of placing an order.
+
+In this new architecture, the "brain" has been surgically transplanted into the MySQL database itself. The Node.js application is now a "thin client" or a simple messenger; its primary job is to pass requests to the database and return the database's response. It no longer makes business-critical decisions.
+
+This logic is now managed by a set of powerful database objects:
+
+1.  **Stored Procedure `sp_create_user`**: Handles the logic for registering a new user.
+2.  **Stored Procedure `sp_place_order`**: A master procedure that controls the entire, complex process of placing an order, including stock checks and data insertion across multiple tables.
+3.  **Trigger `trg_reduce_stock`**: An automated, "magical" function that instantly updates inventory the moment an item is sold.
+4.  **View `view_available_products`**: A virtual, pre-filtered table that ensures the application only ever sees products that are currently in stock.
+
+---
+### Section 2: The "Buy Now" Journey (The Life of a Request)
+---
+
+This is a millisecond-by-millisecond breakdown of what happens when a user clicks the final "Pay Now" button on the payment page.
+
+**Step A: The Frontend Request (Client-Side)**
+- **Millisecond 1:** The user clicks the "Pay Now" button.
+- **Millisecond 5:** The `payment.js` script gathers the necessary data. It retrieves the user's ID from local storage and the cart details (the `paymentCart`). It then constructs a JSON object.
+- **Millisecond 10:** The `fetch` API sends this data via a `POST` request to the `/api/orders` endpoint on the Node.js server. The JSON payload looks like this:
+  ```json
+  {
+    "userId": "user-1638827362",
+    "items": [
+      { "id": "1", "name": "Nike Air Max", "qty": 1, "size": "UK 10", "price": 5999 },
+      { "id": "6", "name": "Woodland Trekking Boot", "qty": 1, "size": "UK 9", "price": 5199 }
+    ],
+    "totalAmount": 11198
+  }
+  ```
+
+**Step B: The Thin Client (Node.js Server)**
+- **Millisecond 50:** The Node.js `server.js` file receives the `POST` request at the `/api/orders` route.
+- **Millisecond 55:** The server generates a unique ID for this new order (e.g., `order-1638827399`).
+- **Millisecond 60:** This is the critical change. The server does **NOT** check stock. It does **NOT** loop through the items. It does **NOT** start a transaction. It trusts the database to do everything.
+- **Millisecond 65:** It makes a single database query, calling the master procedure `sp_place_order` and passing the data as parameters. The `items` array is converted into a JSON string to be passed to MySQL. The query is:
+  ```sql
+  CALL sp_place_order('order-1638827399', 'user-1638827362', 11198, '[{"id":"1",...}]');
+  ```
+
+**Step C: The Conductor (MySQL - The `sp_place_order` Procedure)**
+- **Millisecond 100:** MySQL receives the `CALL` statement and begins executing the `sp_place_order` procedure defined in `advanced_db_logic.sql`.
+- **Millisecond 101:** The `START TRANSACTION;` line is executed. This is a crucial "all or nothing" command. It creates a temporary, isolated "snapshot" of the database. Any changes made from this point on are not permanent until a `COMMIT` command is issued. If anything goes wrong, `ROLLBACK` will undo all changes made inside this snapshot, as if they never happened.
+- **Millisecond 105:** The procedure inserts the main order details into the `orders` table.
+- **Millisecond 110:** The procedure begins a `WHILE` loop to iterate through the `p_items` JSON array.
+- **Millisecond 115 (First Loop):**
+    - It extracts the details for the first item ("Nike Air Max").
+    - It runs a `SELECT` query to check the `stock_quantity` for this product.
+    - **Logic Check:** It executes `IF current_stock < item_qty`. If the stock were 0 and the user ordered 1, this `IF` would be true, and the procedure would `SIGNAL SQLSTATE '45000'`, a custom error. This error is caught by the `EXIT HANDLER`, which immediately triggers a `ROLLBACK`, erasing the order insertion and ending the process. The error is then sent back to Node.js.
+    - Assuming stock is sufficient, it proceeds.
+    - It runs `INSERT INTO order_items (...)`.
+
+**Step D: The Magic Moment (MySQL - The `trg_reduce_stock` Trigger)**
+- **Millisecond 120:** The exact instant the `INSERT` into `order_items` for "Nike Air Max" completes, the database kernel wakes up the `trg_reduce_stock` trigger. This is an automatic, background process.
+- **Millisecond 121:** The trigger code executes. It has access to the newly inserted row via the `NEW` keyword. It runs an `UPDATE` command:
+  ```sql
+  UPDATE products 
+  SET stock_quantity = stock_quantity - NEW.quantity -- (50 - 1)
+  WHERE id = NEW.product_id; -- (id = '1')
+  ```
+  The stock for "Nike Air Max" is instantly reduced from 50 to 49. This happens atomically with the `INSERT`.
+
+**Step E: Repetition and Completion**
+- **Millisecond 125 (Second Loop):** The procedure loops again for the second item ("Woodland Trekking Boot"). It performs the same stock check and `INSERT`.
+- **Millisecond 130:** The trigger `trg_reduce_stock` fires *again*, this time for the "Woodland Trekking Boot", reducing its stock.
+- **Millisecond 135:** The `WHILE` loop finishes.
+- **Millisecond 140:** The `COMMIT;` command is executed. At this moment, all the changes made inside the transaction (the new row in `orders`, the two new rows in `order_items`, and the two stock updates performed by the trigger) are made permanent and visible to the rest of the system. The "snapshot" is merged into the main database.
+- **Millisecond 200:** The success signal travels back to `server.js`.
+- **Millisecond 250:** `server.js` sends a `201 Created` JSON response back to the user's browser, which then shows a success message.
+
+---
+### Section 3: The "View" Explained
+---
+
+When you navigate to the store page, your browser requests products from the `/api/products` endpoint. Here is how the `view_available_products` object changes that flow:
+
+1.  **Node.js Receives Request:** The `GET` request hits the `/api/products` route in `server.js`.
+2.  **Querying the View, Not the Table:** The code executes `SELECT * FROM view_available_products;`. This is the key. It is NOT querying the physical `products` table directly. It is querying the "virtual table" we defined in `advanced_db_logic.sql`.
+3.  **How the View Works:** The `view_available_products` is a stored query that acts like a window into the `products` table. Its definition has a crucial `WHERE` clause:
+    ```sql
+    WHERE p.stock_quantity > 0
+    ```
+4.  **The Result:** The database first runs this view query. It gets all products, but only returns the ones with a `stock_quantity` greater than zero. If "Nike Air Max" has 49 stock, it is included. If another shoe has 0 stock, it is filtered out and is completely invisible to the `SELECT *` query.
+5.  **Return to Frontend:** Node.js gets this pre-filtered list of in-stock-only products and sends it to the frontend. The user *never even knows* that out-of-stock products exist in the database, because the logic is perfectly encapsulated and hidden by the view.
+
+---
+### Section 4: Syllabus Mapping
+---
+
+This entire workflow is a direct, practical demonstration of key relational database concepts from your syllabus.
+
+- **This flow demonstrates Unit 4 (DML - Data Manipulation Language) and Unit 7 (Transactions) because...**
+    - **DML (Unit 4):** The stored procedure `sp_place_order` and the trigger `trg_reduce_stock` are composed almost entirely of DML statements. The procedure uses `INSERT` to create new records in `orders` and `order_items`. The trigger uses `UPDATE` to modify the `stock_quantity` in the `products` table. This shows how DML is used to perform the core data manipulation of the application.
+    - **Transactions (Unit 7):** The `sp_place_order` procedure is wrapped in a transaction (`START TRANSACTION`...`COMMIT`/`ROLLBACK`). This guarantees the **Atomicity** property of ACID—either the entire order (including all items and all stock updates) succeeds, or the entire operation is rolled back, leaving the database in its original, consistent state. This prevents partial orders or incorrect stock levels, which is the primary purpose of transaction control.

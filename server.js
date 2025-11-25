@@ -40,29 +40,29 @@ app.get('/', (req, res) => {
   res.send('StellarSole Backend Server is running!');
 });
 
-// GET all products
+// GET all products from the new view
 app.get('/api/products', async (req, res) => {
   try {
     const connection = await dbPool.getConnection();
     
-    // NOTE: This is a simple implementation that can lead to the N+1 query problem.
-    // For a larger scale application, a JOIN would be more performant.
-    const [products] = await connection.query('SELECT * FROM products');
+    // Using the new view to get available products
+    const [products] = await connection.query('SELECT * FROM view_available_products');
     
+    // The view_available_products concatenates sizes into a string.
+    // We need to split it back into an array for the frontend.
     for (const product of products) {
-      const [sizes] = await connection.query('SELECT size FROM product_sizes WHERE product_id = ?', [product.id]);
-      product.sizes = sizes.map(s => s.size);
+      product.sizes = product.sizes ? product.sizes.split(',') : [];
     }
     
     connection.release();
     res.json(products);
   } catch (error) {
-    console.error('Error fetching products:', error);
+    console.error('Error fetching products from view:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-// POST a new user (signup/register)
+// POST a new user (signup/register) using a stored procedure
 app.post('/api/users/register', async (req, res) => {
   const { name, email, password } = req.body;
   const id = 'user-' + Date.now().toString(); // Generate unique ID
@@ -72,25 +72,17 @@ app.post('/api/users/register', async (req, res) => {
   }
 
   try {
-    console.log('[Register] Request received for email:', email);
-    console.log('[Register] Body:', req.body);
-    console.log('[Register] Generated ID:', id);
-
     // Hash the password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    console.log('[Register] Password hashed.');
 
     const connection = await dbPool.getConnection();
-    console.log('[Register] Database connection obtained.');
     
-    // Insert the new user into the database
-    console.log('[Register] Executing INSERT query...');
+    // Call the stored procedure
     await connection.query(
-      'INSERT INTO users (id, name, email, password) VALUES (?, ?, ?, ?)',
+      'CALL sp_create_user(?, ?, ?, ?)',
       [id, name, email, hashedPassword]
     );
-    console.log('[Register] INSERT query successful.');
     
     connection.release();
 
@@ -144,7 +136,7 @@ app.post('/api/users/login', async (req, res) => {
   }
 });
 
-// POST a new order
+// POST a new order using a stored procedure
 app.post('/api/orders', async (req, res) => {
   const { userId, items, totalAmount } = req.body;
   const orderId = 'order-' + Date.now().toString(); // Generate unique ID
@@ -156,33 +148,22 @@ app.post('/api/orders', async (req, res) => {
   let connection;
   try {
     connection = await dbPool.getConnection();
-    await connection.beginTransaction();
-
-    // 1. Create the order
+    
+    // The entire transaction is now handled by the stored procedure.
     await connection.query(
-      'INSERT INTO orders (id, user_id, total_amount) VALUES (?, ?, ?)',
-      [orderId, userId, totalAmount]
+      'CALL sp_place_order(?, ?, ?, ?)',
+      [orderId, userId, totalAmount, JSON.stringify(items)]
     );
-
-    // 2. Insert each order item
-    for (const item of items) {
-      await connection.query(
-        'INSERT INTO order_items (order_id, product_id, size, quantity, price) VALUES (?, ?, ?, ?, ?)',
-        [orderId, item.id, item.size, item.qty, item.price]
-      );
-    }
-
-    // If all went well, commit the transaction
-    await connection.commit();
     
     res.status(201).json({ message: 'Order created successfully', orderId });
 
   } catch (error) {
-    // If anything fails, roll back the transaction
-    if (connection) {
-      await connection.rollback();
+    // Catch errors signaled from the stored procedure (e.g., insufficient stock)
+    if (error.sqlState === '45000') {
+      console.error('Order failed due to business logic:', error.message);
+      return res.status(400).json({ error: 'Insufficient stock for a product in your order.' });
     }
-    console.error('Error creating order:', error);
+    console.error('Error creating order with stored procedure:', error);
     res.status(500).json({ error: 'Failed to create order.' });
   } finally {
     // Always release the connection

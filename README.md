@@ -237,3 +237,34 @@ Here is the journey of a typical API request, from the user's browser to the dat
     ```
 
 5.  **UI Update (Frontend)**: The client's `fetch` call receives the response. The JavaScript code then uses this JSON data to dynamically update the page, for instance, by rendering the product cards on the screen.
+
+---
+
+# DBMS Syllabus Implementation
+
+This section details how advanced database features were implemented to align with the DBMS syllabus, moving business logic from the application layer into the database itself.
+
+### Academic Justification
+
+Moving business logic into the database layer (using Views, Stored Procedures, and Triggers) is a core tenet of robust database design for two primary reasons:
+
+1.  **Data Independence**: The application (the Node.js `server.js` file) becomes a "thin client." It no longer needs to know the underlying table structures or complex business rules. It simply calls a procedure (e.g., `sp_place_order`) and trusts the database to handle the logic. If we later decide to refactor the tables, we only need to update the database objects (the procedure, view, etc.), and the application code requires no changes. This decoupling is a fundamental goal of the relational model.
+
+2.  **Security & Centralization**: By defining rules within the database, we ensure they are always enforced, regardless of which application or user connects. A trigger to reduce stock, for example, will fire whether an order is placed via the web app, a mobile app, or a direct database connection by an administrator. This centralizes control and prevents the application from accidentally or maliciously bypassing critical business rules like stock management.
+
+### Syllabus Mapping
+
+| Syllabus Lecture        | Feature Implemented                                                                       | File / Location                            |
+| ----------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------ |
+| **Lecture 21: Views**   | A view `view_available_products` was created to abstract the query for in-stock products. | `advanced_db_logic.sql` (Definition)       |
+|                         | The application now queries this view instead of the base `products` table.                 | `server.js` (Usage in `/api/products`)     |
+| **Lecture 22-23: Stored Procedures** | A procedure `sp_create_user` encapsulates the logic for user registration.                  | `advanced_db_logic.sql` (Definition)       |
+|                         | A procedure `sp_place_order` centralizes the entire multi-step order placement logic. | `advanced_db_logic.sql` (Definition)       |
+|                         | The Node.js application calls these procedures instead of running raw SQL.                | `server.js` (Usage in `/api/*` routes)     |
+| **Lecture 24: Triggers**| A trigger `trg_reduce_stock` automatically updates the `products.stock_quantity` column.  | `advanced_db_logic.sql` (Definition)       |
+|                         | This trigger fires `AFTER INSERT` on the `order_items` table.                             | `order_items` table (Implicitly attached)  |
+| **Lecture 25-27: Transactions** | The `sp_place_order` procedure wraps the entire order process in a transaction.       | `advanced_db_logic.sql` (Inside procedure) |
+|                         | It uses `START TRANSACTION`, `COMMIT`, and `ROLLBACK` (via an error handler) to ensure atomicity. | `sp_place_order` procedure               |
+
+*Additionally, a new `stock_quantity` column was added to the `products` table via an `ALTER TABLE` command to facilitate this new logic.*
+
