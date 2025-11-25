@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout - Stellar Soles</title>
+<link rel="icon" type="image/png" href="stellarsole.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="navbar.js"></script>
+<script defer src="checkout.js"></script>
+</head>
+<body class="flex flex-col min-h-screen bg-gray-50 font-sans">
+
+<header id="navbar"></header>
+
+<main class="flex-1 container mx-auto px-6 py-10">
+  <h1 class="text-4xl font-bold text-center mb-10">Checkout</h1>
+
+  <table class="min-w-full bg-white rounded-lg shadow-md overflow-hidden mb-6">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="py-3 px-4">Select</th>
+        <th class="py-3 px-4">Product</th>
+        <th class="py-3 px-4">Size</th>
+        <th class="py-3 px-4">Quantity</th>
+        <th class="py-3 px-4">Price</th>
+        <th class="py-3 px-4">Remove</th>
+      </tr>
+    </thead>
+    <tbody id="checkout-table"></tbody>
+  </table>
+
+  <button id="checkout-btn" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded font-semibold">Proceed to Payment</button>
+</main>
+
+<footer class="bg-gray-900 text-gray-400 py-12 px-6 mt-auto">
+  <div class="container mx-auto">
+    <div class="grid md:grid-cols-4 gap-8 mb-8">
+      <div>
+        <h3 class="text-white text-2xl font-bold mb-4">Stellar Soles</h3>
+        <p>Your trusted partner for premium sneakers since 2025</p>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-4">Shop</h4>
+        <ul class="space-y-2">
+          <li><a href="store.html" class="hover:text-white transition">Store</a></li>
+          <li><a href="#" class="hover:text-white transition">Best Sellers</a></li>
+          <li><a href="#" class="hover:text-white transition">Sale</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-4">Support</h4>
+        <ul class="space-y-2">
+          <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
+          <li><a href="#" class="hover:text-white transition">Shipping Info</a></li>
+          <li><a href="#" class="hover:text-white transition">Returns</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-4">Follow Us</h4>
+        <div class="flex gap-4">
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition">f</a>
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition">t</a>
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition">i</a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-gray-800 pt-8 text-center">
+      <p>© 2025 Stellar Soles. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

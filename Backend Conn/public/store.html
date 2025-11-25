@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stellar Soles - Store</title>
+<link rel="icon" type="image/png" href="stellarsole.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="navbar.js"></script>
+<script defer src="store.js"></script>
+<style>
+  .product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .product-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+  }
+  .product-card img {
+    transition: transform 0.3s ease;
+  }
+  .product-card:hover img {
+    transform: translateY(-4px);
+  }
+
+  /* Buttons */
+  .btn {
+    transition: background 0.3s, transform 0.2s;
+  }
+  .btn:hover {
+    transform: scale(1.05);
+  }
+</style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+<header id="navbar"></header>
+
+<main class="container mx-auto px-6 py-10">
+  <h1 class="text-4xl font-bold text-center mb-10">Our Collection</h1>
+
+  <!-- Filters -->
+  <div class="flex flex-wrap gap-4 mb-10 justify-center">
+    <select id="filter-gender" class="border rounded-lg p-3 text-lg bg-blue-50 hover:bg-blue-100">
+      <option value="">All Genders</option>
+      <option value="men">Men</option>
+      <option value="women">Women</option>
+      <option value="kids">Kids</option>
+    </select>
+
+    <select id="filter-occasion" class="border rounded-lg p-3 text-lg bg-blue-50 hover:bg-blue-100">
+      <option value="">All Occasions</option>
+      <option value="casual">Casual</option>
+      <option value="formal">Formal</option>
+      <option value="sports">Sports</option>
+      <option value="sneaker">Sneaker</option>
+    </select>
+  </div>
+
+  <!-- Product Grid -->
+  <div id="product-grid" class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"></div>
+</main>
+
+<footer class="bg-gray-900 text-gray-400 py-12 px-6 mt-auto">
+  <div class="container mx-auto">
+    <div class="grid md:grid-cols-4 gap-8 mb-8">
+      <div>
+        <h3 class="text-white text-2xl font-bold mb-4">Stellar Soles</h3>
+        <p>Your trusted partner for premium sneakers since 2025</p>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-4">Shop</h4>
+        <ul class="space-y-2">
+          <li><a href="index.html" class="hover:text-white transition">Home</a></li>
+          <li><a href="signup.html" class="hover:text-white transition">Sign Up</a></li>
+          <li><a href="login.html" class="hover:text-white transition">Login</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-4">Support</h4>
+        <ul class="space-y-2">
+          <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
+          <li><a href="#" class="hover:text-white transition">Shipping Info</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-4">Follow Us</h4>
+        <div class="flex gap-4">
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition">f</a>
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition">t</a>
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition">i</a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-gray-800 pt-8 text-center">
+      <p>© 2025 Stellar Soles. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

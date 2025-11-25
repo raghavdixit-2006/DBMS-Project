@@ -54,3 +54,40 @@ All frontend files have been updated to point to the new API endpoints, and all 
 - Refactored SQL and Migration script to strictly adhere to DBMS Syllabus Units 1 & 4.
 - Fixed `migrate.js` to handle ISO date format conversion, resolving `Incorrect datetime value` error.
 - Fixed broken images on the store page by updating `store.js` to use the correct `img_url` property.
+---
+
+## Migration Log to Backend Conn/ (2025-11-25)
+
+The Stellar Soles backend and frontend have been successfully migrated into the `Backend Conn/` template structure.
+
+### Key Migration Steps:
+
+*   **`Backend Conn/.env`**: The project's `.env` file was copied to `Backend Conn/.env`.
+*   **`Backend Conn/server.js`**:
+    *   Updated to load environment variables via `dotenv`.
+    *   Removed the inline `mysql.createConnection` and `init.sql` execution, deferring database connection to `db.js`.
+    *   Removed `todoRoutes` import and usage.
+    *   Integrated new routes for products, orders, exchanges, and newsletter.
+    *   Updated `PORT` to use `process.env.PORT` (defaulting to `3001`).
+*   **`Backend Conn/db.js`**:
+    *   Updated to load environment variables via `dotenv`.
+    *   Configured to use `process.env.DB_HOST`, `DB_USER`, `DB_PASSWORD`, and `DB_NAME` (set to `stellar_soles_db`).
+*   **`Backend Conn/sql/init.sql`**:
+    *   Completely replaced with the combined content of the original `schema.sql` and `advanced_db_logic.sql`. This includes all Stellar Soles tables, views (`view_available_products`), stored procedures (`sp_create_user`, `sp_place_order`), and triggers (`trg_reduce_stock`).
+*   **`Backend Conn/routes/`**:
+    *   `auth.js` was modified to use the `sp_create_user` stored procedure for registration, aligning with Stellar Soles' authentication logic, and all dependencies on `data/users.json` were removed.
+    *   `todos.js` was deleted as it was not relevant to the project.
+    *   New route files were created: `products.js`, `orders.js`, `exchanges.js`, `newsletter.js`.
+    *   The API endpoint logic for these functionalities was extracted from the original `server.js` and placed into their respective new route files.
+*   **`Backend Conn/data/users.json`**: Deleted as it's no longer used.
+*   **`Backend Conn/public/`**: All static frontend files (HTML, JS, CSS, images) from the root directory were moved into this folder. This includes `index.html`, `store.html`, `checkout.html`, `payment.html`, `profile.html`, `login.html`, `signup.html`, `about.html`, `contact.html`, `exchange.html`, `navbar.js`, `checkout.js`, `exchange.js`, `login.js`, `payment.js`, `profile.js`, `signup.js`, `store.js`, and `stellarsole.png`.
+*   **`Backend Conn/package.json`**: Updated to include `dotenv` as a dependency.
+*   **Dependencies**: `npm install` was run within `Backend Conn/` to ensure all new/updated dependencies are installed.
+
+### Syllabus Compliance Confirmation:
+
+All original syllabus-compliant logic (Stored Procedures, Views, Triggers, Transactions) has been successfully preserved and integrated into the new template structure. The Node.js application (`server.js`) now acts as a thin client, relying on the MySQL database to enforce business rules and manage data integrity.
+
+### Next Steps:
+
+To run the new migrated server and application, please follow the instructions below.

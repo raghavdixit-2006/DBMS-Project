@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="dash-body">
+  <div class="dash-container">
+    <header>
+      <h2 id="welcomeUser">Welcome User</h2>
+      <button id="logoutBtn" class="btn small">Logout</button>
+    </header>
+
+    <section class="todo-section">
+      <h3>Your Tasks</h3>
+      <div class="todo-add">
+        <input type="text" id="newTodo" placeholder="Enter new task..." />
+        <button id="addBtn" class="btn">Add</button>
+      </div>
+
+      <ul id="todoList" class="todo-list"></ul>
+    </section>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

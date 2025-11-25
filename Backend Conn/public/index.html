@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stellar Soles - Premium Sneakers</title>
+  <link rel="icon" type="image/png" href="stellarsole.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in-up { animation: fadeInUp 0.8s ease-out; }
+    .hover-scale { transition: transform 0.3s ease; }
+    .hover-scale:hover { transform: scale(1.05); }
+    /* Ensure footer sticks to bottom */
+    html, body { height: 100%; }
+    body { display: flex; flex-direction: column; }
+    main { flex: 1; }
+  </style>
+</head>
+<body class="bg-white font-sans">
+
+<!-- Dynamic Navbar -->
+<header id="navbar"></header>
+
+<main>
+  <!-- Hero Section -->
+  <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500"></div>
+    <div class="absolute inset-0 bg-black/40"></div>
+    <div class="relative z-10 text-center text-white px-6 fade-in-up">
+      <h1 class="text-7xl md:text-8xl font-extrabold mb-6 tracking-tight">Step Into Greatness</h1>
+      <p class="text-2xl md:text-3xl mb-8 font-light">Premium sneakers that define your style</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#featured" class="bg-white text-gray-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition hover-scale">Explore Collection</a>
+        <a href="store.html" class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-gray-900 transition">Shop Now</a>
+      </div>
+    </div>
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Featured Products Section -->
+<!-- Replace ONLY the Featured Products section with this version -->
+<section id="featured" class="py-20 px-6 bg-gray-50">
+  <div class="container mx-auto">
+    <div class="text-center mb-16">
+      <h2 class="text-5xl font-bold mb-4 text-gray-900">Featured Drops</h2>
+      <p class="text-xl text-gray-600">The latest and greatest from our collection</p>
+    </div>
+
+    <!-- Dynamic Featured Grid -->
+    <div id="featuredGrid" class="grid md:grid-cols-3 gap-8">
+      <!-- JS will load cards here -->
+    </div>
+  </div>
+</section>
+
+<script>
+  async function loadFeaturedProducts() {
+    try {
+      const res = await fetch("db.json");
+      const data = await res.json();
+
+      // Take first 3 products
+      const featured = data.products.slice(0, 3);
+
+      const grid = document.getElementById("featuredGrid");
+      grid.innerHTML = "";
+
+      featured.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-2xl shadow-lg overflow-hidden hover-scale cursor-pointer";
+
+        card.innerHTML = `
+          <div class="h-80 bg-gray-100 flex items-center justify-center">
+            <img src="${p.img}" alt="${p.name}" class="h-64 object-contain drop-shadow-2xl">
+          </div>
+          <div class="p-6">
+            <h3 class="text-2xl font-bold mb-2">${p.name}</h3>
+            <p class="text-gray-600 mb-4">Premium quality footwear for every occasion.</p>
+            <div class="flex justify-between items-center">
+              <span class="text-3xl font-bold text-blue-600">₹${p.price}</span>
+              <button onclick="openStoreWithFilter('${p.occasion}')" class="bg-gray-900 text-white px-6 py-2 rounded-full hover:bg-gray-800 transition">
+                View
+              </button>
+            </div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+    } catch (error) {
+      console.error("Error loading featured products:", error);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", loadFeaturedProducts);
+</script>
+
+
+
+  <!-- Collections Section -->
+  <section id="collections" class="py-20 px-6">
+    <div class="container mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold mb-4 text-gray-900">Shop by Category</h2>
+        <p class="text-xl text-gray-600">Find your perfect fit</p>
+      </div>
+      <div class="grid md:grid-cols-4 gap-6">
+        <div onclick="openStoreWithFilter('Sports')" class="relative h-80 rounded-2xl overflow-hidden hover-scale cursor-pointer group">
+          <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400" alt="Sports" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
+            <div class="p-6 text-white">
+              <h3 class="text-2xl font-bold mb-2">Sports</h3>
+              <p class="text-sm opacity-90">Performance gear</p>
+            </div>
+          </div>
+        </div>
+        <div onclick="openStoreWithFilter('Casual')" class="relative h-80 rounded-2xl overflow-hidden hover-scale cursor-pointer group">
+          <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400" alt="Casual" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
+            <div class="p-6 text-white">
+              <h3 class="text-2xl font-bold mb-2">Casual</h3>
+              <p class="text-sm opacity-90">Everyday style</p>
+            </div>
+          </div>
+        </div>
+        <div onclick="openStoreWithFilter('Formal')" class="relative h-80 rounded-2xl overflow-hidden hover-scale cursor-pointer group">
+          <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=400" alt="Formal" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
+            <div class="p-6 text-white">
+              <h3 class="text-2xl font-bold mb-2">Formal</h3>
+              <p class="text-sm opacity-90">Sophisticated looks</p>
+            </div>
+          </div>
+        </div>
+        <div onclick="openStoreWithFilter('Kids')" class="relative h-80 rounded-2xl overflow-hidden hover-scale cursor-pointer group">
+          <img src="https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=400" alt="Kids" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
+            <div class="p-6 text-white">
+              <h3 class="text-2xl font-bold mb-2">Kids</h3>
+              <p class="text-sm opacity-90">Fun & durable</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About/Why Choose Us Section -->
+  <section id="about" class="py-20 px-6 bg-gray-900 text-white">
+    <div class="container mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-5xl font-bold mb-4">Why Stellar Soles?</h2>
+        <p class="text-xl text-gray-400">More than just sneakers</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-12">
+        <div class="text-center">
+          <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">Premium Quality</h3>
+          <p class="text-gray-400">Handpicked from the finest brands worldwide, ensuring durability and comfort</p>
+        </div>
+        <div class="text-center">
+          <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">Fast Shipping</h3>
+          <p class="text-gray-400">Express delivery to your doorstep within 2-3 business days</p>
+        </div>
+        <div class="text-center">
+          <div class="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">Customer Love</h3>
+          <p class="text-gray-400">Join thousands of satisfied customers who trust us for their footwear needs</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="py-20 px-6 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900"></div>
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500 rounded-full blur-3xl"></div>
+    </div>
+    <div class="container mx-auto text-center text-white relative z-10">
+      <div class="max-w-3xl mx-auto">
+        <div class="inline-block mb-6">
+          <span class="bg-white/20 backdrop-blur-sm text-white px-6 py-2 rounded-full text-sm font-semibold">JOIN OUR COMMUNITY</span>
+        </div>
+        <h2 class="text-5xl md:text-6xl font-extrabold mb-6">Never Miss a Drop</h2>
+        <p class="text-xl mb-10 text-gray-300">Be the first to know about new releases, exclusive offers, and style inspiration delivered straight to your inbox</p>
+        <div class="max-w-lg mx-auto">
+          <div class="flex flex-col sm:flex-row gap-4 bg-white/10 backdrop-blur-md p-2 rounded-full">
+            <input type="email" placeholder="Enter your email address" class="flex-1 px-6 py-4 rounded-full bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-blue-500/50">
+            <button class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-10 py-4 rounded-full font-bold hover:shadow-2xl hover:scale-105 transition-all whitespace-nowrap">
+              Subscribe Now
+            </button>
+          </div>
+          <p class="text-sm text-gray-400 mt-4"> We respect your privacy. Unsubscribe anytime.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-400 py-12 px-6 mt-auto">
+  <div class="container mx-auto">
+    <div class="grid md:grid-cols-4 gap-8 mb-8">
+      <div>
+        <h3 class="text-white text-2xl font-bold mb-4">Stellar Soles</h3>
+        <p>Your trusted partner for premium sneakers since 2025</p>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-4">Shop</h4>
+        <ul class="space-y-2">
+          <li><a href="store.html" class="hover:text-white transition">Store</a></li>
+          <li><a href="#" class="hover:text-white transition">Best Sellers</a></li>
+          <li><a href="#" class="hover:text-white transition">Sale</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-4">Support</h4>
+        <ul class="space-y-2">
+          <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
+          <li><a href="#" class="hover:text-white transition">Shipping Info</a></li>
+          <li><a href="#" class="hover:text-white transition">Returns</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-bold mb-4">Follow Us</h4>
+        <div class="flex gap-4">
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition">f</a>
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition">t</a>
+          <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition">i</a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-gray-800 pt-8 text-center">
+      <p>© 2025 Stellar Soles. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="navbar.js"></script>
+<script>
+  // Open store page with category filter
+  function openStoreWithFilter(category) {
+    localStorage.setItem("storeFilter", category);
+    window.location.href = "store.html";
+  }
+</script>
+<script>
+// NEWSLETTER FUNCTIONALITY
+document.addEventListener("DOMContentLoaded", () => {
+  const emailInput = document.querySelector("input[type='email']");
+  const subscribeBtn = document.querySelector("button.bg-gradient-to-r");
+
+  subscribeBtn.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+
+    if (!email || !email.includes("@")) {
+      alert("❌ Please enter a valid email address!");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:3001/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+
+      if (res.ok) {
+        alert("🎉 Subscribed successfully!");
+        emailInput.value = "";
+      } else {
+        alert("⚠ Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error("Newsletter error:", error);
+      alert("🚫 Could not connect to server.");
+    }
+  });
+});
+</script>
+
+</body>
+</html>
