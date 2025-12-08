@@ -6,13 +6,13 @@
 -- =============================
 -- CREATE DATABASE AND USE IT
 -- =============================
-CREATE DATABASE IF NOT EXISTS stellar_soles_db;
+CREATE DATABASE stellar_soles_db;
 USE stellar_soles_db;
 
 -- =============================
 -- TABLES
 -- =============================
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE users (
   id VARCHAR(50) NOT NULL,
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS users (
   UNIQUE (email)
 );
 
-CREATE TABLE IF NOT EXISTS products (
+CREATE TABLE products (
   id VARCHAR(50) NOT NULL,
   name VARCHAR(255) NOT NULL,
   price DECIMAL(10, 2) NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS products (
   PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS product_sizes (
+CREATE TABLE product_sizes (
   id INT NOT NULL AUTO_INCREMENT,
   product_id VARCHAR(50) NOT NULL,
   size VARCHAR(50) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS product_sizes (
   FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS orders (
+CREATE TABLE orders (
   id VARCHAR(50) NOT NULL,
   user_id VARCHAR(50) NOT NULL,
   order_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS orders (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS order_items (
+CREATE TABLE order_items (
   id INT NOT NULL AUTO_INCREMENT,
   order_id VARCHAR(50) NOT NULL,
   product_id VARCHAR(50) NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS order_items (
   FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS exchanges (
+CREATE TABLE exchanges (
   id VARCHAR(50) NOT NULL,
   order_id VARCHAR(50) NOT NULL,
   reason TEXT,
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS exchanges (
   FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+CREATE TABLE newsletter_subscribers (
   id INT NOT NULL AUTO_INCREMENT,
   email VARCHAR(255) NOT NULL,
   subscribed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -134,7 +134,7 @@ GROUP BY
 
 -- Implements Lecture 22-23: Stored Procedures
 -- Procedure for creating a new user. This abstracts the INSERT logic.
-DROP PROCEDURE IF EXISTS sp_create_user;
+DROP PROCEDURE sp_create_user;
 DELIMITER $$
 CREATE PROCEDURE sp_create_user(
     IN p_id VARCHAR(50),
@@ -153,7 +153,7 @@ DELIMITER ;
 -- Implements Lecture 25-27: Transactions/Concurrency & Lecture 22-23: Stored Procedures
 -- Procedure for placing a complete order with multiple items.
 -- This procedure uses a transaction to ensure all parts of the order succeed or fail together (ACID).
-DROP PROCEDURE IF EXISTS sp_place_order;
+DROP PROCEDURE sp_place_order;
 DELIMITER $$
 CREATE PROCEDURE sp_place_order(
     IN p_order_id VARCHAR(50),
@@ -216,7 +216,7 @@ DELIMITER ;
 -- Implements Lecture 24: Triggers
 -- This trigger automatically reduces the stock_quantity in the products table
 -- AFTER a new record is inserted into the order_items table.
-DROP TRIGGER IF EXISTS trg_reduce_stock;
+DROP TRIGGER trg_reduce_stock;
 DELIMITER $$
 CREATE TRIGGER trg_reduce_stock
 AFTER INSERT ON order_items
