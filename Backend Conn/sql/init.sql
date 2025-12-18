@@ -1,8 +1,3 @@
--- =====================================================================
--- DATABASE INITIALIZATION FILE (init.sql) for Stellar Soles
--- This file creates all tables, views, triggers, procedures automatically.
--- =====================================================================
-
 -- =============================
 -- CREATE DATABASE AND USE IT
 -- =============================
@@ -79,13 +74,6 @@ CREATE TABLE newsletter_subscribers (
   UNIQUE (email)
 );
 
--- ----------------------------------------------------------------
--- ADVANCED DATABASE LOGIC - STELLAR SOLES
--- This script implements advanced DBMS features as per the syllabus.
--- ----------------------------------------------------------------
-
--- Implements Lecture 21: Views & Schema Modification
--- First, add the stock_quantity column to our products table to track inventory, but only if it doesn't exist.
 SET @db_name = 'stellar_soles_db';
 SET @table_name = 'products';
 SET @column_name = 'stock_quantity';
@@ -108,9 +96,6 @@ PREPARE stmt FROM @alter_sql;
 EXECUTE stmt;
 DEALLOCATE PREPARE stmt;
 
--- Now, create a view that only shows products that are in stock.
--- This simplifies the query for the client application and hides the underlying table structure.
--- We use GROUP_CONCAT to aggregate the available sizes for each product into a single string.
 CREATE OR REPLACE VIEW view_available_products AS
 SELECT 
     p.id,
@@ -130,10 +115,6 @@ WHERE
 GROUP BY
     p.id, p.name, p.price, p.gender, p.occasion, p.img_url, p.stock_quantity;
 
--- ----------------------------------------------------------------
-
--- Implements Lecture 22-23: Stored Procedures
--- Procedure for creating a new user. This abstracts the INSERT logic.
 DROP PROCEDURE sp_create_user;
 DELIMITER $$
 CREATE PROCEDURE sp_create_user(
@@ -148,11 +129,6 @@ BEGIN
 END$$
 DELIMITER ;
 
--- ----------------------------------------------------------------
-
--- Implements Lecture 25-27: Transactions/Concurrency & Lecture 22-23: Stored Procedures
--- Procedure for placing a complete order with multiple items.
--- This procedure uses a transaction to ensure all parts of the order succeed or fail together (ACID).
 DROP PROCEDURE sp_place_order;
 DELIMITER $$
 CREATE PROCEDURE sp_place_order(
@@ -211,11 +187,7 @@ BEGIN
 END$$
 DELIMITER ;
 
--- ----------------------------------------------------------------
 
--- Implements Lecture 24: Triggers
--- This trigger automatically reduces the stock_quantity in the products table
--- AFTER a new record is inserted into the order_items table.
 DROP TRIGGER trg_reduce_stock;
 DELIMITER $$
 CREATE TRIGGER trg_reduce_stock
